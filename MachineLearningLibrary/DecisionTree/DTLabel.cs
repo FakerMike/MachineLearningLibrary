@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 
 namespace MachineLearningLibrary
 {
-    class DecisionTree
+    class DTLabel
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public DTLabel()
         {
-            Console.WriteLine("Hello world!");
-            Console.Read();
         }
+
+
+
+
     }
 }
