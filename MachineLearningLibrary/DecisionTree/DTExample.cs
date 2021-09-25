@@ -11,7 +11,7 @@ namespace MachineLearningLibrary
         private bool training;
         private Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues;
         public float Weight { get; }
-        public DTLabel Label { get; }
+        public DTAttribute.DTValue Label { get; }
 
         /// <summary>
         /// Constructor
@@ -22,7 +22,7 @@ namespace MachineLearningLibrary
             Weight = weight;
             training = false;
         }
-        public DTExample(float weight, Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues, DTLabel label)
+        public DTExample(float weight, Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues, DTAttribute.DTValue label)
         {
             this.attributeValues = attributeValues;
             Weight = weight;
@@ -37,6 +37,11 @@ namespace MachineLearningLibrary
         public DTAttribute.DTValue GetAttributeValue(DTAttribute attribute)
         {
             return attributeValues[attribute];
+        }
+
+        public void SetAttributeValue(DTAttribute attribute, DTAttribute.DTValue value)
+        {
+            attributeValues[attribute] = value;
         }
 
     }

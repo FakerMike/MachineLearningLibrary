@@ -15,7 +15,7 @@ namespace MachineLearningLibrary
             FLOAT
         }
 
-        public DTAttributeType Type { get; }
+        public DTAttributeType Type { get; set; }
         public string Name { get; }
         public List<DTValue> PossibleValues { get; }
 
@@ -79,6 +79,21 @@ namespace MachineLearningLibrary
                 Type = DTAttributeType.FLOAT;
                 ValueFloat = value;
             }
+            public DTValue(DTAttributeType type, string toParse)
+            {
+                Type = type;
+                switch (type) {
+                    case DTAttributeType.FLOAT:
+                        ValueFloat = float.Parse(toParse);
+                        break;
+                    case DTAttributeType.INT:
+                        ValueInt = int.Parse(toParse);
+                        break;
+                    case DTAttributeType.STRING:
+                        ValueString = toParse;
+                        break;
+                }
+            }
 
 
             public override int GetHashCode()
@@ -95,7 +110,7 @@ namespace MachineLearningLibrary
 
             public override bool Equals(object obj)
             {
-                if (obj.GetType() == typeof(DTValue))
+                if (obj.GetType() == GetType())
                 {
                     DTValue att = (DTValue)obj;
                     if (att.Type == Type)

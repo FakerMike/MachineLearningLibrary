@@ -43,22 +43,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DecisionTree\DTHeuristics.cs" />
     <Compile Include="DecisionTree\DTSet.cs" />
-    <Compile Include="DecisionTree\DTLabel.cs" />
     <Compile Include="DecisionTree\DTExample.cs" />
     <Compile Include="DecisionTree\DTAttribute.cs" />
-    <Compile Include="DecisionTree\DTSettings.cs" />
     <Compile Include="DecisionTree\DecisionTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Data\bank\test.csv" />
-    <None Include="Data\bank\train.csv" />
+    <None Include="Data\bank\test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\bank\train.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\bank\__MACOSX\._test.csv" />
     <None Include="Data\bank\__MACOSX\._train.csv" />
-    <None Include="Data\car\test.csv" />
-    <None Include="Data\car\train.csv" />
+    <None Include="Data\car\test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\car\train.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\car\__MACOSX\._test.csv" />
     <None Include="Data\car\__MACOSX\._train.csv" />
     <None Include="README.md" />
