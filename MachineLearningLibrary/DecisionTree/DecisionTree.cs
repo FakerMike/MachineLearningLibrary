@@ -12,7 +12,7 @@ namespace MachineLearningLibrary
         /// <summary>
         /// MAIN ENTRY POINT FOR CODE
         /// </summary>
-        static void Main(string[] args)
+        public static void HW1Main(string[] args)
         {
             Console.WriteLine("Problem 2.2, a - b:");
             DecisionTree tree;
@@ -59,6 +59,7 @@ namespace MachineLearningLibrary
                 }
             }
 
+            Console.Read();
         }
 
         private DTSet trainingData;
@@ -68,12 +69,23 @@ namespace MachineLearningLibrary
         private DTAttribute label;
         private DTNode root;
         private bool verbose;
+        public bool[] AdaCorrect { get; private set; }
 
         public DecisionTree(DTHeuristic heuristic, bool verbose)
         {
             this.heuristic = heuristic;
             this.verbose = verbose;
             attributes = new List<DTAttribute>();
+        }
+
+        public int TrainingCount()
+        {
+            return trainingData.Examples.Count;
+        }
+
+        public void ReweightData(double[] weights)
+        {
+            trainingData.ReweightData(weights);
         }
 
         public void SetupCar() {
@@ -173,7 +185,7 @@ namespace MachineLearningLibrary
         {
             double initialError;
             double max = 0;
-            double informationGain = 0;
+            double informationGain;
             List<DTSet> nextSets;
 
             // End conditions
@@ -267,21 +279,41 @@ namespace MachineLearningLibrary
 
         public double CheckTrainingData()
         {
-            int correct = 0;
+            double correct = 0;
             foreach (DTExample example in trainingData.Examples)
-                if (IsCorrect(example)) correct++;
-            return (double)correct / trainingData.Examples.Count;
+                if (IsCorrect(example)) correct+= example.Weight;
+            return correct / trainingData.GetTotalWeight();
         }
 
 
         public double RunTest()
         {
-            int correct = 0;
+            double correct = 0;
             foreach (DTExample example in testData.Examples)
-                if (IsCorrect(example)) correct++;
-            return (double)correct / testData.Examples.Count;
+                if (IsCorrect(example)) correct += example.Weight;
+            return correct / trainingData.GetTotalWeight();
         }
 
+        public double ComputeAdaError()
+        {
+            AdaCorrect = new bool[trainingData.Examples.Count];
+            double incorrect = 0.0;
+            DTExample example;
+            for (int i = 0; i < trainingData.Examples.Count; i++)
+            {
+                example = trainingData.Examples[i];
+                if (!IsCorrect(example))
+                {
+                    incorrect += example.Weight;
+                    AdaCorrect[i] = false;
+                } else
+                {
+                    AdaCorrect[i] = true;
+                }
+
+            }                
+            return incorrect;
+        }
 
 
 
