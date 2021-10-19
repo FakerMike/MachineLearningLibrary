@@ -62,14 +62,15 @@ namespace MachineLearningLibrary
             Console.Read();
         }
 
-        private DTSet trainingData;
-        private DTSet testData;
+        public DTSet trainingData { get; private set; }
+        public DTSet testData { get; private set; }
         private DTHeuristic heuristic;
         private List<DTAttribute> attributes;
         private DTAttribute label;
-        private DTNode root;
+        public DTNode root { get; private set; }
         private bool verbose;
         public bool[] AdaCorrect { get; private set; }
+        public static Random rand = new Random();
 
         public DecisionTree(DTHeuristic heuristic, bool verbose)
         {
@@ -291,7 +292,7 @@ namespace MachineLearningLibrary
             double correct = 0;
             foreach (DTExample example in testData.Examples)
                 if (IsCorrect(example)) correct += example.Weight;
-            return correct / trainingData.GetTotalWeight();
+            return correct / testData.GetTotalWeight();
         }
 
         public double ComputeAdaError()
@@ -315,6 +316,16 @@ namespace MachineLearningLibrary
             return incorrect;
         }
 
+        public void BagTrainingData(int count)
+        {
+            DTSet newSet = new DTSet(trainingData.AvailableAttributes);
+            
+            for (int i = 0; i < count; i++)
+            {
+                newSet.Add(trainingData.Examples[rand.Next(trainingData.Examples.Count)]);
+            }
+            trainingData = newSet;
+        }
 
 
         public void SetupBank()
@@ -512,6 +523,11 @@ namespace MachineLearningLibrary
         }
 
 
+        public void DisposeData()
+        {
+            trainingData = null;
+            testData = null;
+        }
 
         private void IntsToMedians()
         {

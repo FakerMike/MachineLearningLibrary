@@ -49,6 +49,7 @@
     <Compile Include="DecisionTree\DTAttribute.cs" />
     <Compile Include="DecisionTree\DecisionTree.cs" />
     <Compile Include="Ensemble Learning\AdaBoost.cs" />
+    <Compile Include="Ensemble Learning\Bagging.cs" />
     <Compile Include="Ensemble Learning\Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
