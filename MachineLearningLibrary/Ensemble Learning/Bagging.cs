@@ -24,7 +24,7 @@ namespace MachineLearningLibrary
 
             tree.BagTrainingData(count);
             tree.CreateWithID3();
-            Console.WriteLine("n,ITrainingError,ITestError,ATrainingAccuracy,ATestAccuracy");
+            Console.WriteLine("n,ITrainingError,ITestError,BTrainingAccuracy,BTestAccuracy");
 
             for (int n = 1; n < maxT; n++)
             {

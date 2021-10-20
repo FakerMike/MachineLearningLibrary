@@ -35,7 +35,7 @@ namespace MachineLearningLibrary
             tree.ReweightData(weights);
             tree.CreateWithID3(2);
 
-            Console.WriteLine("n,ITrainingError,ITestError,ATrainingError,ATestError");
+            Console.WriteLine("n,ITrainingError,ITestError,ATrainingAccuracy,ATestAccuracy");
 
 
             for (int n = 1; n < maxT; n++)

@@ -10,11 +10,16 @@ namespace MachineLearningLibrary
     {
         public static void HW2Main(string[] args)
         {
-            //AdaBoost booster = new AdaBoost(500);
-            //Bagging bagger = new Bagging(500);
-            //RandomForest forest = new RandomForest(500, 2);
-            //RandomForest forest = new RandomForest(500, 4);
-            //RandomForest forest = new RandomForest(500, 6);
+            Console.WriteLine("Running AdaBoost with 500 trees...");
+            AdaBoost booster = new AdaBoost(500);
+            Console.WriteLine("Running Bagging with 500 trees...");
+            Bagging bagger = new Bagging(500);
+            Console.WriteLine("Running Random Forest with 500 trees, 2 choices per branch...");
+            RandomForest forest2 = new RandomForest(500, 2);
+            Console.WriteLine("Running Random Forest with 500 trees, 4 choices per branch...");
+            RandomForest forest4 = new RandomForest(500, 4);
+            Console.WriteLine("Running Random Forest with 500 trees, 6 choices per branch...");
+            RandomForest forest6 = new RandomForest(500, 6);
             Console.Read();
             Console.Read();
             Console.Read();
