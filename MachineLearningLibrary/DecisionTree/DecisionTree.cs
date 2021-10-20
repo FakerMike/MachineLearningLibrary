@@ -175,14 +175,18 @@ namespace MachineLearningLibrary
 
         public void CreateWithID3(int maxLevels)
         {
-            ID3Recursion(trainingData, maxLevels, root);
+            ID3Recursion(trainingData, maxLevels, root, int.MaxValue);
         }
         public void CreateWithID3()
         {
             CreateWithID3(attributes.Count + 1);
         }
+        public void CreateWithID3Restricted(int maxLevels, int restriction)
+        {
+            ID3Recursion(trainingData, maxLevels, root, restriction);
+        }
 
-        private void ID3Recursion(DTSet set, int levels, DTNode current)
+        private void ID3Recursion(DTSet set, int levels, DTNode current, int restriction)
         {
             double initialError;
             double max = 0;
@@ -220,14 +224,43 @@ namespace MachineLearningLibrary
                 return;
             }
 
-
-            DTAttribute best = set.AvailableAttributes[0];
-            foreach(DTAttribute attribute in set.AvailableAttributes)
+            DTAttribute best;
+            if (restriction < set.AvailableAttributes.Count)
             {
-                informationGain = initialError - heuristic.MultiSetError(set, attribute, label);
-                if (informationGain > max) {
+                HashSet<int> taken = new HashSet<int>();
+                best = set.AvailableAttributes[rand.Next(set.AvailableAttributes.Count)];
+                informationGain = initialError - heuristic.MultiSetError(set, best, label);
+                if (informationGain > max)
+                {
                     max = informationGain;
-                    best = attribute;
+                }
+                for (int i = 1; i < restriction; i++)
+                {
+                    int next = rand.Next(set.AvailableAttributes.Count);
+                    while (taken.Contains(next))
+                    {
+                        next = rand.Next(set.AvailableAttributes.Count);
+                    }
+                    DTAttribute attribute = set.AvailableAttributes[next];
+                    informationGain = initialError - heuristic.MultiSetError(set, attribute, label);
+                    if (informationGain > max)
+                    {
+                        max = informationGain;
+                        best = attribute;
+                    }
+                }
+            }
+            else
+            {
+                best = set.AvailableAttributes[0];
+                foreach (DTAttribute attribute in set.AvailableAttributes)
+                {
+                    informationGain = initialError - heuristic.MultiSetError(set, attribute, label);
+                    if (informationGain > max)
+                    {
+                        max = informationGain;
+                        best = attribute;
+                    }
                 }
             }
 
@@ -253,7 +286,7 @@ namespace MachineLearningLibrary
                     Console.WriteLine("Best Label: " + bestLabel);
                 }
                 DTNode nextNode = current.AddNext(next.CreationValue, bestLabel);
-                ID3Recursion(next, levels - 1, nextNode);
+                ID3Recursion(next, levels - 1, nextNode, restriction);
             }
             
         }
