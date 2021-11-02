@@ -11,7 +11,8 @@ namespace MachineLearningLibrary
         static void Main(string[] args)
         {
             //DecisionTree.HW1Main(args);
-            EnsembleLearningProgram.HW2Main(args);
+            //EnsembleLearningProgram.HW2Main(args);
+            Perceptron.HW3Main(args);
         }
     }
 }
