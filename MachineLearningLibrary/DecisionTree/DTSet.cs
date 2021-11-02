@@ -73,8 +73,8 @@ namespace MachineLearningLibrary
 
         public DTAttribute.DTValue BestLabel(DTAttribute labelSettings)
         {
-            Dictionary<DTAttribute.DTValue, int> counts = new Dictionary<DTAttribute.DTValue, int>();
-            int max = 0;
+            Dictionary<DTAttribute.DTValue, double> counts = new Dictionary<DTAttribute.DTValue, double>();
+            double max = 0;
             DTAttribute.DTValue result = null;
 
             foreach(DTAttribute.DTValue value in labelSettings.PossibleValues)
@@ -83,19 +83,36 @@ namespace MachineLearningLibrary
             }
             foreach(DTExample example in Examples)
             {
-                counts[example.Label] += 1;
+                counts[example.Label] += example.Weight;
             }
             foreach (DTAttribute.DTValue value in labelSettings.PossibleValues)
             {
-                int x = counts[value];
+                double x = counts[value];
                 if (x > max)
                 {
-                    x = max;
+                    max = x;
                     result = value;
                 }
             }
-
             return result;
+        }
+
+        public double GetTotalWeight()
+        {
+            double result = 0;
+            foreach (DTExample example in Examples)
+            {
+                result += example.Weight;
+            }
+            return result;
+        }
+
+        public void ReweightData(double[] weights)
+        {
+            for (int i = 0; i < Examples.Count; i++)
+            {
+                Examples[i].SetWeight(weights[i]);
+            }
         }
     }
 }

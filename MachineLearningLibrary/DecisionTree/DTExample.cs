@@ -8,21 +8,21 @@ namespace MachineLearningLibrary
 {
     class DTExample
     {
-        private bool training;
-        private Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues;
-        public float Weight { get; }
+        public bool training { get; }
+        public Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues { get; private set; }
+        public double Weight { get; private set; }
         public DTAttribute.DTValue Label { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public DTExample(float weight, Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues)
+        public DTExample(double weight, Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues)
         {
             this.attributeValues = attributeValues;
             Weight = weight;
             training = false;
         }
-        public DTExample(float weight, Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues, DTAttribute.DTValue label)
+        public DTExample(double weight, Dictionary<DTAttribute, DTAttribute.DTValue> attributeValues, DTAttribute.DTValue label)
         {
             this.attributeValues = attributeValues;
             Weight = weight;
@@ -30,6 +30,18 @@ namespace MachineLearningLibrary
             Label = label;
         }
 
+        public DTExample(double newWeight, DTExample example)
+        {
+            attributeValues = example.attributeValues;
+            Weight = newWeight;
+            training = example.training;
+            Label = example.Label;
+        }
+
+        public void SetWeight(double weight)
+        {
+            Weight = weight;
+        }
 
         public bool IsTraining() { return training; }
 

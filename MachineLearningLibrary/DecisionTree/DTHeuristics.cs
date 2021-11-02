@@ -14,7 +14,7 @@ namespace MachineLearningLibrary
             MAJORITY_ERROR,
             GINI
         }
-        private delegate double PurityCalculation(int[] p, int num);
+        private delegate double PurityCalculation(double[] p, double num);
         private PurityCalculation purity;
 
 
@@ -27,13 +27,13 @@ namespace MachineLearningLibrary
 
         public double MultiSetError(DTSet set, DTAttribute attribute, DTAttribute labelSettings)
         {
-            int num = set.Examples.Count;
+            double num = set.GetTotalWeight();
             List<DTSet> sets = set.Split(attribute);
             double entropy = 0;
 
             foreach (DTSet newSet in sets)
             {
-                entropy += (double)newSet.Examples.Count / num * SingleSetError(newSet, labelSettings);
+                entropy += newSet.GetTotalWeight() / num * SingleSetError(newSet, labelSettings);
             }
 
             return entropy;
@@ -41,9 +41,9 @@ namespace MachineLearningLibrary
 
         public double SingleSetError(DTSet set, DTAttribute labelSettings)
         {
-            int[] p = new int[labelSettings.PossibleValues.Count];
-            int num = set.Examples.Count;
-            double entropy = 0;
+            double[] p = new double[labelSettings.PossibleValues.Count];
+            double num = set.GetTotalWeight();
+            double entropy;
 
             Dictionary<DTAttribute.DTValue, int> index = new Dictionary<DTAttribute.DTValue, int>();
 
@@ -55,7 +55,7 @@ namespace MachineLearningLibrary
 
             foreach(DTExample example in set.Examples)
             {
-                p[index[example.Label]]++;
+                p[index[example.Label]] += example.Weight;
             }
 
             entropy = purity(p, num);
@@ -63,7 +63,7 @@ namespace MachineLearningLibrary
             return entropy;
         }
 
-        private static double EntropyCalculation(int[] p, int num)
+        private static double EntropyCalculation(double[] p, double num)
         {
             double result = 0;
             double x;
@@ -72,30 +72,30 @@ namespace MachineLearningLibrary
 
             for (int i = 0; i < p.Length; i++)
             {
-                x = (double)p[i] / num;
+                x = p[i] / num;
                 if (x > 0) result -= x * Math.Log(x, 2);
             }
 
             return result;
         }
 
-        private static double GiniCalculation(int[] p, int num)
+        private static double GiniCalculation(double[] p, double num)
         {
             double result = 1;
             double x;
 
             for (int i = 0; i < p.Length; i++)
             {
-                x = (double)p[i] / num;
+                x = p[i] / num;
                 result -= x * x;
             }
 
             return result;
         }
 
-        private static double MECalculation(int[] p, int num)
+        private static double MECalculation(double[] p, double num)
         {
-            return (double)(num - p.Max())/num;
+            return (num - p.Max())/num;
         }
 
 

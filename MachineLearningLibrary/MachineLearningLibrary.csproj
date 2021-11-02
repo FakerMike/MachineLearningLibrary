@@ -35,6 +35,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,10 +52,24 @@
     <Compile Include="DecisionTree\DTExample.cs" />
     <Compile Include="DecisionTree\DTAttribute.cs" />
     <Compile Include="DecisionTree\DecisionTree.cs" />
+    <Compile Include="Ensemble Learning\AdaBoost.cs" />
+    <Compile Include="Ensemble Learning\Bagging.cs" />
+    <Compile Include="Ensemble Learning\Main.cs" />
+    <Compile Include="Ensemble Learning\RandomForest.cs" />
+    <Compile Include="Perceptron\DataImport.cs" />
+    <Compile Include="Perceptron\Perceptron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\bank-note\data-desc" />
+    <None Include="Data\bank-note\test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\bank-note\train.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Data\bank\test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -68,9 +86,12 @@
     </None>
     <None Include="Data\car\__MACOSX\._test.csv" />
     <None Include="Data\car\__MACOSX\._train.csv" />
+    <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Linear Regression\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Data\bank\data-desc.txt" />
     <Content Include="Data\bank\__MACOSX\._data-desc.txt" />
