@@ -56,6 +56,8 @@
     <Compile Include="Ensemble Learning\Bagging.cs" />
     <Compile Include="Ensemble Learning\Main.cs" />
     <Compile Include="Ensemble Learning\RandomForest.cs" />
+    <Compile Include="Neural Networks\Helpers.cs" />
+    <Compile Include="Neural Networks\NeuralNetworks.cs" />
     <Compile Include="Perceptron\DataImport.cs" />
     <Compile Include="Perceptron\Perceptron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +93,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Linear Regression\" />
+    <Folder Include="Logistic Regression\" />
+    <Folder Include="SVM\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\bank\data-desc.txt" />

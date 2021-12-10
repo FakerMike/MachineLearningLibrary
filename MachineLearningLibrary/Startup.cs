@@ -12,7 +12,8 @@ namespace MachineLearningLibrary
         {
             //DecisionTree.HW1Main(args);
             //EnsembleLearningProgram.HW2Main(args);
-            Perceptron.HW3Main(args);
+            //Perceptron.HW3Main(args);
+            NeuralNetworks.HW5();
         }
     }
 }
