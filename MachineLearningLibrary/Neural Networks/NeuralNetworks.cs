@@ -225,25 +225,50 @@ namespace MachineLearningLibrary
             Console.WriteLine("Hidden layer width 5:");
             NeuralNetwork neuralNetwork = new NeuralNetwork(5, 3, trainingData, testData);
             //neuralNetwork.Train(20, 1, 5);
-            neuralNetwork.Train(20, .1, 5);
+            neuralNetwork.Train(10, .1, 5);
 
             Console.WriteLine("Hidden layer width 10:");
             neuralNetwork = new NeuralNetwork(10, 3, trainingData, testData);
-            neuralNetwork.Train(20, .1, 5);
+            neuralNetwork.Train(10, .1, 5);
 
             Console.WriteLine("Hidden layer width 25:");
             neuralNetwork = new NeuralNetwork(25, 3, trainingData, testData);
-            neuralNetwork.Train(20, .1, 5);
+            neuralNetwork.Train(10, .1, 5);
 
             Console.WriteLine("Hidden layer width 50:");
             neuralNetwork = new NeuralNetwork(50, 3, trainingData, testData);
-            neuralNetwork.Train(20, .1, 5);
+            neuralNetwork.Train(10, .1, 5);
 
             Console.WriteLine("Hidden layer width 100:");
             neuralNetwork = new NeuralNetwork(100, 3, trainingData, testData);
-            neuralNetwork.Train(20, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
-            Console.Read();
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("BankNote Bad Load");
+            neuralNetwork = new NeuralNetwork(5, 3, trainingData, testData, false);
+            //neuralNetwork.Train(20, 1, 5);
+            neuralNetwork.Train(10, .1, 5);
+
+            Console.WriteLine("Hidden layer width 10:");
+            neuralNetwork = new NeuralNetwork(10, 3, trainingData, testData, false);
+            neuralNetwork.Train(10, .1, 5);
+
+            Console.WriteLine("Hidden layer width 25:");
+            neuralNetwork = new NeuralNetwork(25, 3, trainingData, testData, false);
+            neuralNetwork.Train(10, .1, 5);
+
+            Console.WriteLine("Hidden layer width 50:");
+            neuralNetwork = new NeuralNetwork(50, 3, trainingData, testData, false);
+            neuralNetwork.Train(10, .1, 5);
+
+            Console.WriteLine("Hidden layer width 100:");
+            neuralNetwork = new NeuralNetwork(100, 3, trainingData, testData, false);
+            neuralNetwork.Train(10, .05, 2);
+
 
 
         }
@@ -268,19 +293,36 @@ namespace MachineLearningLibrary
             private List<double[]> trainingData;
             private List<double[]> testData;
 
-            public NeuralNetwork(int width, int depth, List<double[]> trainingData, List<double[]> testData)
+            public NeuralNetwork(int width, int depth, List<double[]> trainingData, List<double[]> testData, bool smartInit = true)
             {
                 structure = new DataStructure(width, depth);
 
-                for (int i = 0; i < width; i++)
+                if (smartInit)
                 {
-                    for (int j = 1; j < width; j++)
+                    for (int i = 0; i < width; i++)
                     {
-                        for (int k = 1; k < depth; k++) {
-                            structure.AddWeight(RandomNormal(), i, j, k);
+                        for (int j = 1; j < width; j++)
+                        {
+                            for (int k = 1; k < depth; k++)
+                            {
+                                structure.AddWeight(RandomNormal(), i, j, k);
+                            }
                         }
+                        structure.AddWeight(RandomNormal(), i, 1, depth);
                     }
-                    structure.AddWeight(RandomNormal(), i, 1, depth);
+                } else
+                {
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 1; j < width; j++)
+                        {
+                            for (int k = 1; k < depth; k++)
+                            {
+                                structure.AddWeight(0, i, j, k);
+                            }
+                        }
+                        structure.AddWeight(0, i, 1, depth);
+                    }
                 }
 
                 this.width = width;
