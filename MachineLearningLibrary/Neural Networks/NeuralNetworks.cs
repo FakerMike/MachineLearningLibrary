@@ -219,13 +219,36 @@ namespace MachineLearningLibrary
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("BankNote");
-            
+            List<double[]> trainingData = DataImport.ImportExamples("Data/bank-note/train.csv", false);
+            List<double[]> testData = DataImport.ImportExamples("Data/bank-note/test.csv", false);
+
+            Console.WriteLine("Hidden layer width 5:");
+            NeuralNetwork neuralNetwork = new NeuralNetwork(5, 3, trainingData, testData);
+            //neuralNetwork.Train(20, 1, 5);
+            neuralNetwork.Train(20, .1, 5);
+
+            Console.WriteLine("Hidden layer width 10:");
+            neuralNetwork = new NeuralNetwork(10, 3, trainingData, testData);
+            neuralNetwork.Train(20, .1, 5);
+
+            Console.WriteLine("Hidden layer width 25:");
+            neuralNetwork = new NeuralNetwork(25, 3, trainingData, testData);
+            neuralNetwork.Train(20, .1, 5);
+
+            Console.WriteLine("Hidden layer width 50:");
+            neuralNetwork = new NeuralNetwork(50, 3, trainingData, testData);
+            neuralNetwork.Train(20, .1, 5);
+
+            Console.WriteLine("Hidden layer width 100:");
+            neuralNetwork = new NeuralNetwork(100, 3, trainingData, testData);
+            neuralNetwork.Train(20, .1, 5);
 
             Console.Read();
 
 
         }
 
+        // Code from https://stackoverflow.com/questions/218060/random-gaussian-variables
         public static double RandomNormal()
         {
             double u1 = 1 - rand.NextDouble();
@@ -233,10 +256,19 @@ namespace MachineLearningLibrary
             return Math.Sqrt(-2 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
         }
 
+
+
         public class NeuralNetwork
         {
             public DataStructure structure;
-            public NeuralNetwork(int width, int depth)
+
+            private int width;
+            private int depth;
+
+            private List<double[]> trainingData;
+            private List<double[]> testData;
+
+            public NeuralNetwork(int width, int depth, List<double[]> trainingData, List<double[]> testData)
             {
                 structure = new DataStructure(width, depth);
 
@@ -250,9 +282,89 @@ namespace MachineLearningLibrary
                     }
                     structure.AddWeight(RandomNormal(), i, 1, depth);
                 }
+
+                this.width = width;
+                this.depth = depth;
+
+                this.trainingData = trainingData;
+                this.testData = testData;
             }
 
+
+
             // TODO:  Train from data
+            public void Train(int epochs, double gamma, double d)
+            {
+                int updateCounter = 100;
+                int updatesTotal = 0;
+                Console.WriteLine($"Width,Updates,TrainingError,TestError");
+                for (int t = 0; t < epochs; t++) {
+                    trainingData.Shuffle();
+                    double learningRate = gamma / (1 + t * gamma / d);
+                    foreach (double[] sample in trainingData)
+                    {
+                        double[] inputs = new double[4];
+                        double label = sample[4];
+                        for (int i = 0; i < 4; i++)
+                        {
+                            inputs[i] = sample[i];
+                        }
+                        structure.AddInputPoint(inputs);
+                        structure.ForwardPass();
+                        structure.Backwards(label);
+                        structure.UpdateWeights(learningRate);
+                        updateCounter--;
+                        if (updateCounter == 1)
+                        {
+                            updateCounter = 100;
+                            updatesTotal++;
+                            Console.WriteLine($"{width},{100 * updatesTotal},{TrainingError()},{Test()}");
+                        }
+                    }
+                    //Console.WriteLine($"Epoch {t}: training error {TrainingError()}, test error {Test()}");
+                }
+
+            }
+
+
+            public double TrainingError()
+            {
+                double correct = 0;
+                double total = trainingData.Count;
+                foreach (double[] sample in trainingData)
+                {
+                    double[] inputs = new double[4];
+                    double label = sample[4];
+                    for (int i = 0; i < 4; i++)
+                    {
+                        inputs[i] = sample[i];
+                    }
+                    structure.AddInputPoint(inputs);
+                    structure.ForwardPass();
+                    if (structure.y * label >= 0) correct++;
+                }
+                return 1 - correct / total;
+            }
+
+
+            public double Test()
+            {
+                double correct = 0;
+                double total = testData.Count;
+                foreach (double[] sample in testData)
+                {
+                    double[] inputs = new double[4];
+                    double label = sample[4];
+                    for (int i = 0; i < 4; i++)
+                    {
+                        inputs[i] = sample[i];
+                    }
+                    structure.AddInputPoint(inputs);
+                    structure.ForwardPass();
+                    if (structure.y * label >= 0) correct++;
+                }
+                return 1 - correct / total;
+            }
 
         }
 
@@ -371,14 +483,14 @@ namespace MachineLearningLibrary
                 // k = depth
                 for (int k = depth - 2; k > 0; k--)
                 {
-                    
+
                     // First the z and s
                     for (int i = 1; i < width; i++)
                     {
                         plz[i, k] = 0;
                         for (int j = 1; j < width; j++)
-                        { 
-                            plz[i, k] += pls[j,k+1] * w[i,j,k+1];
+                        {
+                            plz[i, k] += pls[j, k + 1] * w[i, j, k + 1];
                         }
                         pls[i, k] = plz[i, k] * z[i, k] * (1 - z[i, k]);
                     }
@@ -388,12 +500,44 @@ namespace MachineLearningLibrary
                     {
                         for (int j = 1; j < width; j++)
                         {
-                            plw[i, j, k] = pls[j, k] * z[i, k-1];
+                            plw[i, j, k] = pls[j, k] * z[i, k - 1];
                         }
                     }
                 }
 
 
+            }
+
+            public void UpdateWeights(double gamma)
+            {
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 1; j < width; j++)
+                    {
+                        for (int k = 1; k < depth; k++)
+                        {
+                            w[i, j, k] -= gamma * plw[i, j, k];
+                        }
+                    }
+                    w[i, 1, depth] -= gamma * plw[i, 1, depth];
+                }
+            }
+        }
+    }
+
+    static class ShuffleExtension
+    {
+        // Code from https://stackoverflow.com/questions/273313/randomize-a-listt
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = NeuralNetworks.rand.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
             }
         }
     }

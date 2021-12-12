@@ -16,7 +16,7 @@ namespace MachineLearningLibrary
 
 
 
-        public static List<double[]> ImportExamples(string filename)
+        public static List<double[]> ImportExamples(string filename, bool enrich = true)
         {
             List<double[]> result = new List<double[]>();
 
@@ -27,6 +27,7 @@ namespace MachineLearningLibrary
                 {
                     string line = reader.ReadLine();
                     string[] rawValues = line.Split(',');
+                    if (enrich) { 
                     double[] parsedValues = new double[rawValues.Length + 1];
                     parsedValues[0] = 1;  // Enrich
                     for (int i = 0; i < rawValues.Length; i++)
@@ -36,6 +37,17 @@ namespace MachineLearningLibrary
                     if (parsedValues[rawValues.Length] > 0) parsedValues[rawValues.Length] = 1;
                     else parsedValues[rawValues.Length] = -1;
                     result.Add(parsedValues);
+                    } else
+                    {
+                        double[] parsedValues = new double[rawValues.Length];
+                        for (int i = 0; i < rawValues.Length; i++)
+                        {
+                            parsedValues[i] = double.Parse(rawValues[i]);
+                        }
+                        if (parsedValues[rawValues.Length - 1] > 0) parsedValues[rawValues.Length - 1] = 1;
+                        else parsedValues[rawValues.Length - 1] = -1;
+                        result.Add(parsedValues);
+                    }
                 }
             }
 
