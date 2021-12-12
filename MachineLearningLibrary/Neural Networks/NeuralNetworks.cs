@@ -225,19 +225,19 @@ namespace MachineLearningLibrary
             Console.WriteLine("Hidden layer width 5:");
             NeuralNetwork neuralNetwork = new NeuralNetwork(5, 3, trainingData, testData);
             //neuralNetwork.Train(20, 1, 5);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 10:");
             neuralNetwork = new NeuralNetwork(10, 3, trainingData, testData);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 25:");
             neuralNetwork = new NeuralNetwork(25, 3, trainingData, testData);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 50:");
             neuralNetwork = new NeuralNetwork(50, 3, trainingData, testData);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 100:");
             neuralNetwork = new NeuralNetwork(100, 3, trainingData, testData);
@@ -251,19 +251,19 @@ namespace MachineLearningLibrary
             Console.WriteLine("BankNote Bad Load");
             neuralNetwork = new NeuralNetwork(5, 3, trainingData, testData, false);
             //neuralNetwork.Train(20, 1, 5);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 10:");
             neuralNetwork = new NeuralNetwork(10, 3, trainingData, testData, false);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 25:");
             neuralNetwork = new NeuralNetwork(25, 3, trainingData, testData, false);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 50:");
             neuralNetwork = new NeuralNetwork(50, 3, trainingData, testData, false);
-            neuralNetwork.Train(10, .1, 5);
+            neuralNetwork.Train(10, .05, 2);
 
             Console.WriteLine("Hidden layer width 100:");
             neuralNetwork = new NeuralNetwork(100, 3, trainingData, testData, false);
